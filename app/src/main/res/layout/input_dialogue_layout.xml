@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/spacing_middle"
+    android:orientation="vertical"
+    >
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/citiesInputEditText"
+            android:background="@color/light_white"
+            android:layout_width="match_parent"
+            android:inputType="textMultiLine"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:hint="@string/cities_hint"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,-"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

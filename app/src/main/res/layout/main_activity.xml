@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="locale"
+    android:background="@drawable/bg_wall"
+    tools:context=".ui.fivedayactivity.FiveDayWeatherActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                app:title="@string/selection_title"
+                android:gravity="right"
+                app:titleTextColor="@color/light_white"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="right"
+                    android:id="@+id/addLocationButton"
+                    android:layout_marginRight="20dp"
+                    android:background="@android:color/holo_green_light"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:text="Add"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="@color/light_white"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                    <ImageView
+
+                        android:layout_width="35dp"
+                        android:src="@android:drawable/ic_menu_add"
+                        android:layout_height="35dp">
+                    </ImageView>
+                </LinearLayout>
+
+
+
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_marginTop="15dp"
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include  android:id="@+id/content" layout="@layout/five_days_content" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
