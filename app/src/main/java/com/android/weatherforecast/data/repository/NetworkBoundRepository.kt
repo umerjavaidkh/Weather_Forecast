@@ -71,7 +71,7 @@ abstract class NetworkBoundRepository<RESULT, REQUEST>() {
 
         } catch (e: Exception) {
             // Exception occurred! Emit error
-            emit(State.error("Network error! Can't get latest posts."))
+            emit(State.error("Network error! Can't get latest weather report."))
             e.printStackTrace()
         }
 

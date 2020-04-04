@@ -30,6 +30,6 @@ interface FiveDaysWeatherDao {
      * Fetches all the data from the [FiveDaysWeather.TABLE_NAME] table.
      * @return [Flow]
      */
-    @Query("SELECT * FROM ${FiveDaysWeather.TABLE_NAME}")
-    fun getAllFiveDaysWeather(): Flow<FiveDaysWeather>
+    @Query("SELECT * FROM ${FiveDaysWeather.TABLE_NAME} WHERE id = :id")
+    fun getAllFiveDaysWeather(id:Int): Flow<FiveDaysWeather>
 }

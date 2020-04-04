@@ -68,6 +68,8 @@ public class AppUtil {
     return newCalendar.getTimeInMillis();
   }
 
+
+
   /**
    * Get timestamp of end of day 23:59:59
    *

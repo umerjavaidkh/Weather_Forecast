@@ -54,8 +54,7 @@ class FiveDayWeatherActivity : BaseActivity<FiveDaysWeatherViewModel, MainActivi
             val lat=intent.extras?.getDouble(Constants.CITY_LAT)
             val lon=intent.extras?.getDouble(Constants.CITY_LON)
 
-            //mViewModel.getFiveDaysWeather(cityName,Constants.UNITS,Constants.Lang,5,Constants.API_KEY)
-            mViewModel.getFiveDaysWeatherWithPos(q=cityName,lang = Constants.Lang,units = Constants.UNITS,lat = lat.toString(),lon=lon.toString(),dayCount = 5,appId = API_KEY)
+            mViewModel.getFiveDaysWeatherWithPos(getCurrentCityId(),q="",lang = Constants.Lang,units = Constants.UNITS,lat = lat.toString(),lon=lon.toString(),appId = API_KEY)
 
             toolbar_title.title=cityName
 
@@ -69,6 +68,10 @@ class FiveDayWeatherActivity : BaseActivity<FiveDaysWeatherViewModel, MainActivi
         }
 
         observeData()
+    }
+
+    private fun getCurrentCityId(): Int {
+        return intent.extras?.getInt(Constants.CITY_ID)?:0
     }
 
 
@@ -91,12 +94,10 @@ class FiveDayWeatherActivity : BaseActivity<FiveDaysWeatherViewModel, MainActivi
     fun setData(weatherId:Int?,humidity:Int?,temprature:Double?,wind:Double?){
 
 
-        temp_text_view.setText(
+        temp_text_view.text =
+            temprature?.toString() + " \u2103"
 
-                    temprature.toString()
-
-            )
-            description_text_view.setText(
+        description_text_view.setText(
                 AppUtil.getWeatherStatus(
                     weatherId!!,
                     AppUtil.isRTL(this)
@@ -138,7 +139,7 @@ class FiveDayWeatherActivity : BaseActivity<FiveDaysWeatherViewModel, MainActivi
 
     override fun onLocationChanged(location: Location) {
 
-        mViewModel.getFiveDaysWeatherWithPos(q="",lang = Constants.Lang,units = Constants.UNITS,lat = location.latitude.toString(),lon=location.longitude.toString(),dayCount = 5,appId = API_KEY)
+        mViewModel.getFiveDaysWeatherWithPos(getCurrentCityId(),q="",lang = Constants.Lang,units = Constants.UNITS,lat = location.latitude.toString(),lon=location.longitude.toString(),appId = API_KEY)
     }
 
 
@@ -149,7 +150,7 @@ class FiveDayWeatherActivity : BaseActivity<FiveDaysWeatherViewModel, MainActivi
                 is State.Loading -> showLoading(true)
                 is State.Success -> {
                     if (state.data!=null) {
-                        toolbar_title.title=state.data.city?.name
+                        toolbar_title.title=state.data.city?.name + ", "+state.data.city?.country
                         mAdapter.submitList(arrangeDataForEachDay(state.data))
                         showLoading(false)
                     }

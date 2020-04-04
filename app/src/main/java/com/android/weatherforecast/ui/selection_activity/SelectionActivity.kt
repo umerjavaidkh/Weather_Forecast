@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.android.weatherforecast.R
+import com.android.weatherforecast.app_utils.Constants.CITY_ID
 import com.android.weatherforecast.app_utils.Constants.CITY_LAT
 import com.android.weatherforecast.app_utils.Constants.CITY_LON
 import com.android.weatherforecast.app_utils.Constants.CITY_NAME
@@ -50,6 +51,7 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
 
         //we can also do this by sending whole object through parcelable
         val nextIntent = Intent(this, FiveDayWeatherActivity::class.java)
+        nextIntent.putExtra(CITY_ID, currentWeather.id)
         nextIntent.putExtra(CITY_NAME, currentWeather.name)
         nextIntent.putExtra(CITY_LAT, currentWeather.coord?.lat)
         nextIntent.putExtra(CITY_LON, currentWeather.coord?.lon)
@@ -103,7 +105,6 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
                     }
                 }
                 is State.Error -> {
-                    //showToast(state.message)
                     showError(state.message)
                     showLoading(false)
                 }
@@ -136,7 +137,7 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
         builder.setView(view)
 
 
-        var citiesName = CitiesStringPreference(this@SelectionActivity).citiesString
+        var citiesName =CitiesStringPreference(this@SelectionActivity).citiesString?:"Sharjah,Dubai,Ajman,Rawalpindi,Rawalakot" //
 
         input.setText(citiesName)
 
@@ -150,11 +151,10 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
                         val tempQuery = input.text.toString()
 
                         if (mViewModel.isValidDataEnteredByUser(tempQuery)) {
-
                             CitiesStringPreference(this@SelectionActivity).citiesString = tempQuery
-                            mViewModel.getCurrentWeather(tempQuery)
+                            mViewModel.getCurrentWeatherNew(mViewModel.mapToList(tempQuery))
                         } else {
-                            showToast(getString(R.string.invalid_data_message))
+                            showError(getString(R.string.invalid_data_message))
                         }
 
                     }

@@ -2,6 +2,7 @@ package com.android.weatherforecast.ui.fivedayactivity.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.android.weatherforecast.app_utils.AppUtil
+import com.android.weatherforecast.app_utils.capitalizeWords
 import com.android.weatherforecast.databinding.ItemCityLocationBinding
 import com.android.weatherforecast.databinding.ItemFiveDayBinding
 import com.android.weatherforecast.models.CurrentWeather
@@ -31,14 +32,21 @@ class CurrentCityViewHolder(private val binding: ItemCityLocationBinding) :
 
             binding.cityTime.setText(AppUtil.getTime(calendar, binding.cityTime.context))
 
-            binding.cityName.text = currentWeather.name
+            binding.cityName.text = currentWeather.name+ ", "+currentWeather.sys?.country
 
             binding.tempWeather.text =
                 currentWeather?.main?.temp.toString() + " \u2103" + " " + currentWeather.weather?.get(
                     0
                 )?.main
 
-            currentWeather.weather?.get(0)?.id.let {
+
+            currentWeather.weather?.get(0)?.description?.let{
+
+                binding.description.text=it.capitalizeWords()
+            }
+
+
+            currentWeather?.weather?.get(0)?.id.let {
                 it?.let { it1 ->
                     AppUtil.setWeatherIcon(
                         binding.cityTime.context, binding.weatherImageView,

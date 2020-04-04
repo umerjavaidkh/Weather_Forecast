@@ -40,6 +40,20 @@ class RoomObjectConverter{
 
         @JvmStatic
         @TypeConverter
+        fun fromStringToSYS(value: String?): Sys? {
+            return Gson().fromJson(value, Sys::class.java)
+        }
+
+        @JvmStatic
+        @TypeConverter
+        fun fromSYSToString(value: Sys?): String? {
+            return Gson().toJson(value)
+        }
+
+
+
+        @JvmStatic
+        @TypeConverter
         fun fromStringToClouds(value: String?): Clouds? {
             return Gson().fromJson(value, Clouds::class.java)
         }

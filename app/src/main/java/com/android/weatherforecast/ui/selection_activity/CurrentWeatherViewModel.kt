@@ -49,36 +49,37 @@ import javax.inject.Inject
 class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepository: CurrentWeatherRepository) :
     ViewModel() {
 
-      val disposable:CompositeDisposable =CompositeDisposable()
+    val disposable: CompositeDisposable = CompositeDisposable()
 
-      var  _currentWeatherLiveDataList : MutableLiveData<State<List<CurrentWeather>>> =MutableLiveData<State<List<CurrentWeather>>>()
+    var _currentWeatherLiveDataList: MutableLiveData<State<List<CurrentWeather>>> =
+        MutableLiveData<State<List<CurrentWeather>>>()
 
-      var  resultList =ArrayList<CurrentWeather>()
+    var resultList = ArrayList<CurrentWeather>()
 
 
-    fun mapToList(cites:String):List<String>{
+    fun mapToList(cites: String): List<String> {
 
         return cites.split(",").toList()
     }
 
-    fun  isValidDataEnteredByUser(cites:String):Boolean {
+    fun isValidDataEnteredByUser(cites: String): Boolean {
 
-        if(!cites.isEmpty()){
+        if (!cites.isEmpty()) {
 
             var arrayOfCities = cites.split(",")
 
-           var invalidData= arrayOfCities.filter {
+            var invalidData = arrayOfCities.filter {
                 it.trim().isEmpty()
             }
 
-          return  invalidData.isEmpty() && arrayOfCities.size>=MIN_ALLOWED_CITIES && arrayOfCities.size <= MAX_ALLOWED_CITIES
+            return invalidData.isEmpty() && arrayOfCities.size >= MIN_ALLOWED_CITIES && arrayOfCities.size <= MAX_ALLOWED_CITIES
         }
 
         return false
     }
 
 
-    fun getWeatherData(){
+    fun getWeatherData() {
 
         disposable.add(
             currentWeatherRepository.getCurrentWeatherFromDB()
@@ -89,7 +90,8 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
                     override fun onError(e: Throwable) {
 
-                        _currentWeatherLiveDataList.value = State.error<List<CurrentWeather>>(e.message?:"")
+                        _currentWeatherLiveDataList.value =
+                            State.error<List<CurrentWeather>>(e.message ?: "")
 
                     }
 
@@ -107,13 +109,14 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
                     }
 
 
-                }))
+                })
+        )
     }
 
 
-    fun getCurrentWeatherNew(citiesList:List<String>){
+    fun getCurrentWeatherNew(citiesList: List<String>) {
 
-       _currentWeatherLiveDataList.value = State.loading<List<CurrentWeather>>()
+        _currentWeatherLiveDataList.value = State.loading<List<CurrentWeather>>()
 
         disposable.add(
             currentWeatherRepository.getCurrentWeatherRX(
@@ -126,7 +129,8 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
                     override fun onError(e: Throwable) {
 
-                        _currentWeatherLiveDataList.value = State.error<List<CurrentWeather>>(e.message?:"")
+                        _currentWeatherLiveDataList.value =
+                            State.error<List<CurrentWeather>>(e.message ?: "")
                     }
 
                     override fun onComplete() {
@@ -138,7 +142,7 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
                         t?.let {
 
-                            _currentWeatherLiveDataList.value=State.success(t)
+                            _currentWeatherLiveDataList.value = State.success(t)
 
                         }
 
@@ -150,39 +154,46 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
         )
 
 
-
     }
 
-    fun getCurrentWeather(citiesList:String){
+
+    //
+
+    fun getCurrentWeather(citiesList: String) {
 
         viewModelScope.launch {
 
-          resultList.clear()
+            resultList.clear()
 
             //citiesList.forEach {
 
-               var result= async {
+            var result = async {
 
-                    currentWeatherRepository.getCurrentWeather(citiesList,Constants.UNITS,Constants.Lang,Constants.API_KEY).collect {
+                currentWeatherRepository.getCurrentWeather(
+                    citiesList,
+                    Constants.UNITS,
+                    Constants.Lang,
+                    Constants.API_KEY
+                ).collect {
 
-                        when(it){
+                    when (it) {
 
-                            is State.Success -> {
+                        is State.Success -> {
 
-                                it.data?.let {
-                                    resultList.add(it)
-                                }
-
+                            it.data?.let {
+                                resultList.add(it)
                             }
 
                         }
 
                     }
 
+                }
 
-               // }
 
-               // _currentWeatherLiveDataList.value=resultList
+                // }
+
+                // _currentWeatherLiveDataList.value=resultList
 
 
             }

@@ -50,35 +50,47 @@ class CurrentWeatherRepository @Inject constructor(
 ) {
 
     /**
-     * Fetched the posts from network and stored it in database. At the end, data from persistence
+     * Fetched the data from network and stored it in database. At the end, data from persistence
      * storage is fetched and emitted.
      */
-    fun getCurrentWeather( q: String?,
-                           units: String?,
-                           lang: String?,
-                           appId: String?): Flow<State<CurrentWeather>> {
+    fun getCurrentWeather(
+        q: String?,
+        units: String?,
+        lang: String?,
+        appId: String?
+    ): Flow<State<CurrentWeather>> {
         return object : NetworkBoundRepository<CurrentWeather, CurrentWeather>() {
 
-            override suspend fun saveRemoteData(response:CurrentWeather) =
+            override suspend fun saveRemoteData(response: CurrentWeather) =
 
                 currentWeatherDao.insertCurrentWeather(response)
 
-            override fun fetchFromLocal(): Flow<CurrentWeather> = currentWeatherDao.getAllCurrentWeather()
+            override fun fetchFromLocal(): Flow<CurrentWeather> =
+                currentWeatherDao.getAllCurrentWeather()
 
-            override suspend fun fetchFromRemote(): Response<CurrentWeather?>? = weatherService.getCurrentWeather(q,"","",appId)
+            override suspend fun fetchFromRemote(): Response<CurrentWeather?>? =
+                weatherService.getCurrentWeather(q, "", "", appId)
 
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    fun  getCurrentWeatherFromDB():Observable<List<CurrentWeather>>{
+
+    fun getCurrentWeatherFromDB(): Observable<List<CurrentWeather>> {
 
         return currentWeatherDao.getAllCurrentWeathers()
     }
 
-    fun getCurrentWeatherRX( cities:List<String>,
-                           units: String?,
-                           lang: String?,
-                           appId: String?): Observable<List<CurrentWeather>> {
+
+    /**
+     * Fetched the Cities from network by asynchronous calls
+     * combines the result by RX-java zip operator then return the combine result
+     */
+    fun getCurrentWeatherRX(
+        cities: List<String>,
+        units: String?,
+        lang: String?,
+        appId: String?
+    ): Observable<List<CurrentWeather>> {
 
         val requests = ArrayList<Observable<*>>()
 
@@ -90,7 +102,7 @@ class CurrentWeatherRepository @Inject constructor(
         return Observable
             .zip(requests) {
 
-               var tempList= it.asList() as List<CurrentWeather>
+                var tempList = it.asList() as List<CurrentWeather>
 
                 tempList.also {
                     currentWeatherDao.deleteAllCurrentWeather()

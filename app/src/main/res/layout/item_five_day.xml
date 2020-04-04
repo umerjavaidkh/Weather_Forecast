@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="130dp"
+    android:layout_width="135dp"
     android:layout_height="180dp"
     android:layout_marginEnd="@dimen/spacing_middle"
     android:layoutDirection="locale"
@@ -27,8 +27,20 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/weather_image_view"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp" />
+                    android:layout_width="54dp"
+                    android:layout_height="54dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/des_text_view"
+                    style="@style/SubTextViewInColoredCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="clear"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layoutDirection="ltr"
+                    android:textSize="12sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temp_text_view"

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:id="@+id/clickButtonParent"
     android:layout_marginEnd="@dimen/spacing_middle"
     android:layout_marginStart="10dp"
-    android:layoutDirection="locale"
     android:layout_marginBottom="8dp"
     android:background="#60FFFFFF"
     android:orientation="vertical">
@@ -25,17 +23,20 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/weather_image_view"
-                android:layout_width="38dp"
+                android:layout_width="45dp"
+                android:padding="3dp"
+                android:background="#300099cc"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_unknown"
-                android:layout_height="38dp" />
+                android:layout_height="45dp" />
 
 
             <RelativeLayout
+
                 android:layout_width="wrap_content"
                 android:layout_marginStart="13dp"
                 android:gravity="center_vertical"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/city_name"
@@ -75,20 +76,36 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/end_icon"
-                    android:layout_width="28dp"
+                    android:layout_width="38dp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="15dp"
                     android:rotation="-90"
+                    android:layout_alignTop="@id/city_time"
+                    android:layout_alignBottom="@id/description"
                     android:src="@drawable/arrow_down"
                     android:layout_height="38dp" />
+
+
+                <TextView
+                    android:layout_below="@id/temp_weather"
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:maxLines="3"
+                    android:textSize="15dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="jxjcjjcdjdjdjjdjjdjjdjdjdjdjjdjj"
+                    android:ellipsize="end"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content">
+
+                </TextView>
 
 
             </RelativeLayout>
 
 
-
-
-
         </LinearLayout>
+
+
 
 </LinearLayout>

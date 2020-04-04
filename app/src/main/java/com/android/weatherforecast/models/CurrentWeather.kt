@@ -28,7 +28,9 @@ import com.google.gson.annotations.SerializedName
     @SerializedName("base")
     var base: String? = null,
     @SerializedName("wind")
-    var wind: Wind? = null
+    var wind: Wind? = null,
+    @SerializedName("sys")
+    var sys: Sys? = null
 
 
 ){

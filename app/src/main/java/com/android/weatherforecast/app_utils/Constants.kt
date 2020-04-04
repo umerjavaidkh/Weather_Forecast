@@ -7,6 +7,7 @@ package com.android.weatherforecast.app_utils
      const val TIME_TO_PASS = 6 * 600000.toLong()
      const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
      const val UNITS = "metric"
+     const val CITY_ID="city_id"
      const val CITY_NAME="city_name"
      const val CITY_LAT="city_lat"
      const val CITY_LON="city_lon"

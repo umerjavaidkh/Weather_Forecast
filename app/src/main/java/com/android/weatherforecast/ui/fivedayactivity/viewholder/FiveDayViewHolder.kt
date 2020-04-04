@@ -3,6 +3,7 @@ package com.android.weatherforecast.ui.fivedayactivity.viewholder
 import androidx.recyclerview.widget.RecyclerView
 import com.android.weatherforecast.app_utils.AppUtil
 import com.android.weatherforecast.app_utils.Constants
+import com.android.weatherforecast.app_utils.capitalizeWords
 import com.android.weatherforecast.databinding.ItemFiveDayBinding
 import com.android.weatherforecast.models.FiveDaysWeather
 import com.android.weatherforecast.models.ItemHourly
@@ -21,13 +22,16 @@ class FiveDayViewHolder(private val binding: ItemFiveDayBinding) : RecyclerView.
         val calendar =
             Calendar.getInstance(TimeZone.getDefault())
 
-         var hourOfDay=calendar.get(Calendar.HOUR_OF_DAY)
+         var hourOfDay= calendar.get(Calendar.HOUR_OF_DAY)
 
         //index mapping
          var index=0
 
-        if(fiveDaysWeather.list?.size!! < 8){
-            index= 7 - (hourOfDay/3)
+        if(hourOfDay==0){
+            index= hourOfDay
+        }
+        else if(fiveDaysWeather.list?.size!! < 8){
+            index= 7-(hourOfDay/3)   //0 1 2 3 4 5 6 7  // hour = 4  item = 4
         }else{
             index= (hourOfDay/3)
         }
@@ -62,6 +66,14 @@ class FiveDayViewHolder(private val binding: ItemFiveDayBinding) : RecyclerView.
                     itemHourly.main!!.temp
                 )
             )
+
+
+
+            itemHourly.weather?.get(0)?.description?.let {
+
+                binding.desTextView.text=it.capitalizeWords()
+            }
+
             binding.minTempTextView.setText(
                 String.format(
                     Locale.getDefault(),

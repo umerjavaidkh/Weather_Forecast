@@ -16,6 +16,9 @@ class FiveDaysWeather (
     @SerializedName("id")
     var id :Int= 0,
 
+    @SerializedName("city_id")
+    var city_id: Int = 0,
+
     @SerializedName("dt")
      var dt: Int = 0,
 
