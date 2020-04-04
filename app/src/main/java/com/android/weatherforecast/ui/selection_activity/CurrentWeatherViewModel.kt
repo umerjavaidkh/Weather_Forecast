@@ -50,7 +50,8 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
     ViewModel() {
 
       val disposable:CompositeDisposable =CompositeDisposable()
-      var  _currentWeatherLiveDataList : MutableLiveData<List<CurrentWeather>> =MutableLiveData<List<CurrentWeather>>()
+
+      var  _currentWeatherLiveDataList : MutableLiveData<State<List<CurrentWeather>>> =MutableLiveData<State<List<CurrentWeather>>>()
 
       var  resultList =ArrayList<CurrentWeather>()
 
@@ -58,7 +59,6 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
     fun mapToList(cites:String):List<String>{
 
         return cites.split(",").toList()
-
     }
 
     fun  isValidDataEnteredByUser(cites:String):Boolean {
@@ -89,6 +89,8 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
                     override fun onError(e: Throwable) {
 
+                        _currentWeatherLiveDataList.value = State.error<List<CurrentWeather>>(e.message?:"")
+
                     }
 
                     override fun onComplete() {
@@ -98,7 +100,7 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
                     override fun onNext(t: List<CurrentWeather>) {
 
                         t?.let {
-                            _currentWeatherLiveDataList.value = t
+                            _currentWeatherLiveDataList.value = State.success(t)
                         }
 
 
@@ -111,6 +113,8 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
     fun getCurrentWeatherNew(citiesList:List<String>){
 
+       _currentWeatherLiveDataList.value = State.loading<List<CurrentWeather>>()
+
         disposable.add(
             currentWeatherRepository.getCurrentWeatherRX(
                 citiesList, Constants.UNITS, Constants.Lang, Constants.API_KEY
@@ -122,7 +126,7 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
                     override fun onError(e: Throwable) {
 
-
+                        _currentWeatherLiveDataList.value = State.error<List<CurrentWeather>>(e.message?:"")
                     }
 
                     override fun onComplete() {
@@ -134,7 +138,7 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
                         t?.let {
 
-                            _currentWeatherLiveDataList.value=t
+                            _currentWeatherLiveDataList.value=State.success(t)
 
                         }
 
@@ -149,17 +153,17 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
 
     }
 
-    fun getCurrentWeather(citiesList:List<String>){
+    fun getCurrentWeather(citiesList:String){
 
         viewModelScope.launch {
 
           resultList.clear()
 
-            citiesList.forEach {
+            //citiesList.forEach {
 
                var result= async {
 
-                    currentWeatherRepository.getCurrentWeather(it,Constants.UNITS,Constants.Lang,Constants.API_KEY).collect {
+                    currentWeatherRepository.getCurrentWeather(citiesList,Constants.UNITS,Constants.Lang,Constants.API_KEY).collect {
 
                         when(it){
 
@@ -176,9 +180,9 @@ class CurrentWeatherViewModel @Inject constructor(private var currentWeatherRepo
                     }
 
 
-                }
+               // }
 
-                _currentWeatherLiveDataList.value=resultList
+               // _currentWeatherLiveDataList.value=resultList
 
 
             }

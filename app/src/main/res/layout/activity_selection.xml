@@ -49,4 +49,18 @@
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
+    <me.ibrahimsn.lib.CirclesLoadingView
+        android:id="@+id/progressLoader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:circleRadius="15dp"
+        app:circleMargin="15dp"
+        app:animDistance="15dp"
+        app:animDuration="1000"
+        android:layout_gravity="center"
+        app:animDelay="150"
+        app:animInterpolator="accelerateDecelerate"
+
+         />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

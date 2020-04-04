@@ -155,7 +155,7 @@ class FiveDayWeatherActivity : BaseActivity<FiveDaysWeatherViewModel, MainActivi
                     }
                 }
                 is State.Error -> {
-                    showToast(state.message)
+                    showError(state.message)
                     showLoading(false)
                 }
             }
@@ -193,8 +193,10 @@ class FiveDayWeatherActivity : BaseActivity<FiveDaysWeatherViewModel, MainActivi
 
    }
     private fun showLoading(isLoading: Boolean) {
-
-
+        if(isLoading)
+            mViewBinding.progressLoader.visibility= View.VISIBLE
+        else
+            mViewBinding.progressLoader.visibility= View.GONE
     }
 
     override fun onRequestPermissionsResult(

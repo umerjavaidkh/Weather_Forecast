@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -17,14 +19,17 @@ import com.android.weatherforecast.app_utils.Constants.HUMIDITY
 import com.android.weatherforecast.app_utils.Constants.TEMPERATURE
 import com.android.weatherforecast.app_utils.Constants.WEATHER_ID
 import com.android.weatherforecast.app_utils.Constants.WIND
+import com.android.weatherforecast.app_utils.State
 import com.android.weatherforecast.app_utils.getColorRes
 import com.android.weatherforecast.app_utils.showToast
 import com.android.weatherforecast.app_utils.viewModelOf
+import com.android.weatherforecast.data.shared_prefrences.CitiesStringPreference
 import com.android.weatherforecast.databinding.ActivitySelectionBinding
 import com.android.weatherforecast.models.CurrentWeather
 import com.android.weatherforecast.ui.BaseActivity
 import com.android.weatherforecast.ui.fivedayactivity.FiveDayWeatherActivity
 import com.android.weatherforecast.ui.selection_activity.adapter.CityListAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_selection.*
 
 
@@ -44,14 +49,14 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
     override fun onItemClicked(currentWeather: CurrentWeather, view: View) {
 
         //we can also do this by sending whole object through parcelable
-        val nextIntent=Intent(this,FiveDayWeatherActivity::class.java)
-        nextIntent.putExtra(CITY_NAME,currentWeather.name)
-        nextIntent.putExtra(CITY_LAT,currentWeather.coord?.lat)
-        nextIntent.putExtra(CITY_LON,currentWeather.coord?.lon)
-        nextIntent.putExtra(WEATHER_ID,currentWeather.weather?.get(0)?.id)
-        nextIntent.putExtra(HUMIDITY,currentWeather.main?.humidity)
-        nextIntent.putExtra(TEMPERATURE,currentWeather.main?.temp)
-        nextIntent.putExtra(WIND,currentWeather.wind?.speed)
+        val nextIntent = Intent(this, FiveDayWeatherActivity::class.java)
+        nextIntent.putExtra(CITY_NAME, currentWeather.name)
+        nextIntent.putExtra(CITY_LAT, currentWeather.coord?.lat)
+        nextIntent.putExtra(CITY_LON, currentWeather.coord?.lon)
+        nextIntent.putExtra(WEATHER_ID, currentWeather.weather?.get(0)?.id)
+        nextIntent.putExtra(HUMIDITY, currentWeather.main?.humidity)
+        nextIntent.putExtra(TEMPERATURE, currentWeather.main?.temp)
+        nextIntent.putExtra(WIND, currentWeather.wind?.speed)
         startActivity(nextIntent)
         finish()
     }
@@ -87,10 +92,21 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
 
 
     private fun observeData() {
-        mViewModel._currentWeatherLiveDataList.observe(this, Observer { it ->
+        mViewModel._currentWeatherLiveDataList.observe(this, Observer { state ->
 
-            it.let {
-                mAdapter.submitList(it)
+            when (state) {
+                is State.Loading -> showLoading(true)
+                is State.Success -> {
+                    if (state.data != null) {
+                        showLoading(false)
+                        mAdapter.submitList(state.data)
+                    }
+                }
+                is State.Error -> {
+                    //showToast(state.message)
+                    showError(state.message)
+                    showLoading(false)
+                }
             }
 
         })
@@ -99,6 +115,10 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
 
     private fun showLoading(isLoading: Boolean) {
 
+        if (isLoading)
+            mViewBinding.progressLoader.visibility = VISIBLE
+        else
+            mViewBinding.progressLoader.visibility = GONE
 
     }
 
@@ -115,10 +135,8 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
 
         builder.setView(view)
 
-        var citiesName = ""
-        mAdapter.currentList.forEach {
-            citiesName += it.name + ","
-        }
+
+        var citiesName = CitiesStringPreference(this@SelectionActivity).citiesString
 
         input.setText(citiesName)
 
@@ -132,7 +150,9 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
                         val tempQuery = input.text.toString()
 
                         if (mViewModel.isValidDataEnteredByUser(tempQuery)) {
-                            mViewModel.getCurrentWeatherNew(mViewModel.mapToList(tempQuery))
+
+                            CitiesStringPreference(this@SelectionActivity).citiesString = tempQuery
+                            mViewModel.getCurrentWeather(tempQuery)
                         } else {
                             showToast(getString(R.string.invalid_data_message))
                         }

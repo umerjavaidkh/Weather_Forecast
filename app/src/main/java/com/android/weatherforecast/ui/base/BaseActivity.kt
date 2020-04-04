@@ -24,11 +24,13 @@
 package com.android.weatherforecast.ui
 
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.AndroidInjection
 import dagger.android.DaggerActivity
 import javax.inject.Inject
@@ -61,4 +63,11 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
      * It returns [VM] which is assigned to [mViewModel] and initialized in [onCreate]
      */
     abstract fun getViewModel(): VM
+
+
+    public fun showError(message:String) {
+       val snackBar= Snackbar.make( mViewBinding.root,message, Snackbar.LENGTH_SHORT)
+        snackBar.setBackgroundTint(Color.RED)
+        snackBar.show()
+    }
 }
