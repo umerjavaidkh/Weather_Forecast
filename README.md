@@ -56,7 +56,7 @@ $ git clone https://github.com/umerjavaidkh/Weather_Forecast.git
    
    
    
-   ![](images/Screenshot_20200405-020729_Weather_Forecast.jpg){:height="800px" width="480px"}
+   ![](images/Screenshot_20200405-020729_Weather_Forecast.jpg  | width=480 height=800)
     ![](images/Screenshot_20200405-020738_Weather_Forecast.jpg)
      ![](images/Screenshot_20200405-020821_Weather_Forecast.jpg)
       ![](images/Screenshot_20200405-020841_Weather_Forecast.jpg)
