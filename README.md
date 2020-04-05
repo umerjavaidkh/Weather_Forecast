@@ -55,13 +55,10 @@ $ git clone https://github.com/umerjavaidkh/Weather_Forecast.git
    3. Run -> CurrentViewModelViewModelTest with  Coverage Report Option
    
    
-  img[alt=Screenshot_20200405-020729_Weather_Forecast.jpg] {
-  width: 70%;
-  border: none;
-  background: none;
-}
+  
    
    
+   ![](images/Screenshot_20200405-020729_Weather_Forecast.jpg)
     ![](images/Screenshot_20200405-020738_Weather_Forecast.jpg)
      ![](images/Screenshot_20200405-020821_Weather_Forecast.jpg)
       ![](images/Screenshot_20200405-020841_Weather_Forecast.jpg)
