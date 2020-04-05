@@ -45,8 +45,8 @@ import javax.inject.Singleton
 
 @Singleton
 class CurrentWeatherRepository @Inject constructor(
-    private var currentWeatherDao: CurrentWeatherDao,
-    private var weatherService: WeatherService
+    private val currentWeatherDao: CurrentWeatherDao,
+    private val weatherService: WeatherService
 ) {
 
     /**

@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "de.mannodermaus.android-junit5"
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -17,6 +18,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -138,6 +142,7 @@ dependencies {
     def mockito_version = "2.19.0"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
+    testImplementation "org.mockito:mockito-android:$mockito_version"
 
 
     androidTestImplementation 'androidx.test:rules:1.2.0'

@@ -137,7 +137,7 @@ class SelectionActivity : BaseActivity<CurrentWeatherViewModel, ActivitySelectio
         builder.setView(view)
 
 
-        var citiesName =CitiesStringPreference(this@SelectionActivity).citiesString?:"Sharjah,Dubai,Ajman,Rawalpindi,Rawalakot" //
+        var citiesName =CitiesStringPreference(this@SelectionActivity).citiesString //
 
         input.setText(citiesName)
 

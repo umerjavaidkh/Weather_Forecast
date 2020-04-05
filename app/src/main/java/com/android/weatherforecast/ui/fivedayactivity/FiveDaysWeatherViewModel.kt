@@ -48,20 +48,20 @@ class FiveDaysWeatherViewModel @Inject constructor(private val fiveDaysWeatherRe
         get() = _fiveDaysWeatherLiveData
 
 
-
     fun getFiveDaysWeatherWithPos(
-        id:Int,
+        id: Int,
         q: String?,
         lang: String?,
         units: String?,
         lat: String?,
         lon: String?,
         appId: String?
-    ){
+    ) {
         viewModelScope.launch {
-            fiveDaysWeatherRepository.getFiveDaysWeather(id,q,lang,units,lat,lon,appId).collect {
-                _fiveDaysWeatherLiveData.value = it
-            }
+            fiveDaysWeatherRepository.getFiveDaysWeather(id, q, lang, units, lat, lon, appId)
+                .collect {
+                    _fiveDaysWeatherLiveData.value = it
+                }
         }
     }
 

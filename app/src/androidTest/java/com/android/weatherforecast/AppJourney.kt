@@ -59,7 +59,7 @@ class AppJourney {
         onView(withId(R.id.floatingAddButton)).perform(click())
     }
 
-    val tempStr = "dubai,sharjah,ajman"
+    val tempStr = "Sharjah,Dubai,Ajman,Rawalpindi,Rawalakot"
 
     val tempStr1 = "Dubai,Sharjah city,Ajman,"
 

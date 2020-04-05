@@ -48,34 +48,36 @@ class FiveDaysWeatherRepository @Inject constructor(
 ) {
 
 
-
-
     /**
      * Fetched the FiveDaysWeather from network and stored it in database. At the end, data from persistence
      * storage is fetched and emitted.
      */
-    fun getFiveDaysWeather( id: Int,
-                            q: String?,
-                            lang:String?,
-                           units: String?,
-                           lat: String?,
-                           lon: String?,
-                           appId: String?): Flow<State<FiveDaysWeather>> {
+    fun getFiveDaysWeather(
+        id: Int,
+        q: String?,
+        lang: String?,
+        units: String?,
+        lat: String?,
+        lon: String?,
+        appId: String?
+    ): Flow<State<FiveDaysWeather>> {
         return object : NetworkBoundRepository<FiveDaysWeather, FiveDaysWeather>() {
 
             override suspend fun saveRemoteData(response: FiveDaysWeather) {
 
-                synchronized(fiveDaysWeatherDao){
+                synchronized(fiveDaysWeatherDao) {
                     fiveDaysWeatherDao.deleteAllFiveDaysWeather()
-                    response.id=id
+                    response.id = id
                     fiveDaysWeatherDao.insertFiveDaysWeather(response)
                 }
 
-        }
+            }
 
-            override fun fetchFromLocal(): Flow<FiveDaysWeather> = fiveDaysWeatherDao.getAllFiveDaysWeather(id)
+            override fun fetchFromLocal(): Flow<FiveDaysWeather> =
+                fiveDaysWeatherDao.getAllFiveDaysWeather(id)
 
-            override suspend fun fetchFromRemote(): Response<FiveDaysWeather?>? = weatherService.getFiveDaysWeather(q,lang,units,lat,lon,appId)
+            override suspend fun fetchFromRemote(): Response<FiveDaysWeather?>? =
+                weatherService.getFiveDaysWeather(q, lang, units, lat, lon, appId)
 
         }.asFlow().flowOn(Dispatchers.IO)
     }
