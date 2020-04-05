@@ -49,5 +49,13 @@ $ git clone https://github.com/umerjavaidkh/Weather_Forecast.git
   2. Open com.android.weatherforecast AppJourney
   3. Run -> AppJourney
   
-
+## Run Coverage Report
+   1. Navigate to Test
+   2. Open com.android.weatherforecast.ui.selection_activity CurrentViewModelViewModelTest
+   3. Run -> CurrentViewModelViewModelTest with  Coverage Report Option
+   
+   
+   
+   
+   
 
